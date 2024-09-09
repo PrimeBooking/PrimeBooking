@@ -1,21 +1,25 @@
+using System.ComponentModel.DataAnnotations;
+using PrimeBooking.Domain.Informative.Common;
+
 namespace PrimeBooking.Domain.Informative.Hotel;
 
 //ValueObject
 public record ContactInformation
 {
-    //Regex
+    [Phone(ErrorMessage = "Invalid Contact Number")]
     public string Phone { get; private set; }
-    public Address Address { get; private set; }
+    [EmailAddress(ErrorMessage = "Invalid Email Address")]
     public string Email { get; private set; }
+    public Address Address { get; private set; }
     
     private ContactInformation()
     {
     }
     
-    public ContactInformation(string phone, Address address, string email)
+    public ContactInformation(string phone, string email, Address address)
     {
         Phone = phone;
-        Address = address;
         Email = email;
+        Address = address;
     }
 }

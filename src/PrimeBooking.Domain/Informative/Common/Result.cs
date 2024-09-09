@@ -17,12 +17,15 @@ public class Result
 
     public static Result<TValue> Success<TValue>(TValue value) => new (value, true, null);
     public static Result<TValue> Failure<TValue>(Error error) => new (default, false, error);
+
     public static Result<TValue> Create<TValue>(TValue? value) =>
-        value is not null ? Success(value) : Failure<TValue>(
-            new Error(
-                ErrorCode.UnhandledRequest, 
-                ErrorType.InvalidFormat, 
-                "Unable to create a Result object"));
+        value is not null
+            ? Success(value)
+            : Failure<TValue>(
+                ErrorFactory.BuildError(ErrorCode.UnhandledRequest,
+                    ErrorType.InvalidFormat,
+                    "Unable to create a Result object"
+                ));
 }
 
 public class Result<TValue> : Result

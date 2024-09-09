@@ -27,10 +27,9 @@ public sealed class Hotel : AggregateRoot<HotelId>
 
     public Result Create()
     {
-        if (string.IsNullOrEmpty(Name))
-        {
-            return Result.Failure(HotelErrors.EmptyNameValue);
-        }
+        if (string.IsNullOrEmpty(Name)) return Result.Failure(HotelErrors.EmptyNameValue);
+        
+        if (Capacity <= 0) return Result.Failure(HotelErrors.LessZeroCapacityValue);
         
         RaiseDomainEvent(new CreatedEvent(Name, Capacity, ContactInformation, Facilities, Stars, DateTime.Now));
 
