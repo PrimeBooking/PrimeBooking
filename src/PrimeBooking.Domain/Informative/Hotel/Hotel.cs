@@ -1,4 +1,3 @@
-using PrimeBooking.Domain.Informative.Common;
 using PrimeBooking.Domain.Informative.Hotel.Errors;
 using PrimeBooking.Domain.Informative.Hotel.Events;
 

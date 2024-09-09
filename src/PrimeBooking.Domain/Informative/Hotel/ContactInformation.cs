@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using PrimeBooking.Domain.Informative.Common;
 
 namespace PrimeBooking.Domain.Informative.Hotel;
 
