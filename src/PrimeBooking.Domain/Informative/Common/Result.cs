@@ -1,3 +1,5 @@
+using System.Net;
+
 namespace PrimeBooking.Domain.Informative.Common;
 
 public class Result
@@ -24,7 +26,8 @@ public class Result
             : Failure<TValue>(
                 ErrorFactory.BuildError(ErrorCode.UnhandledRequest,
                     ErrorType.InvalidFormat,
-                    "Unable to create a Result object"
+                    "Unable to create a Result object",
+                    HttpStatusCode.InternalServerError
                 ));
 }
 
@@ -37,8 +40,8 @@ public class Result<TValue> : Result
         _value = value;
     }
 
-    public TValue Value => IsSuccess 
-        ? _value! 
+    public TValue Value => IsSuccess
+        ? _value!
         : throw new InvalidOperationException("Failed Result can't be accessed");
 
     public static implicit operator Result<TValue>(TValue value) => Create(value);
