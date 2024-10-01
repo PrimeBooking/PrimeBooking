@@ -1,6 +1,4 @@
-using System.Net;
-
-namespace PrimeBooking.Domain.Informative.Hotel.Errors;
+namespace PrimeBooking.Domain.Hotel.Errors;
 
 public static class HotelErrors
 {
@@ -22,6 +20,13 @@ public static class HotelErrors
         ErrorCode.Validation,
         ErrorType.InvalidFormat,
         "Capacity can't be less or equal zero",
+        HttpStatusCode.UnprocessableEntity
+    );
+    
+    public static readonly Error EmptyGuidValue =  ErrorFactory.BuildError(
+        ErrorCode.Validation,
+        ErrorType.InvalidFormat,
+        "Guid can't be empty",
         HttpStatusCode.UnprocessableEntity
     );
 }

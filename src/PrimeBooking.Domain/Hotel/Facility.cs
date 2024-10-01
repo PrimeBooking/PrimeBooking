@@ -1,4 +1,4 @@
-namespace PrimeBooking.Domain.Informative.Hotel;
+namespace PrimeBooking.Domain.Hotel;
 
 public enum Facility
 {

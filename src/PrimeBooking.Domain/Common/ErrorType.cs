@@ -1,4 +1,4 @@
-namespace PrimeBooking.Domain.Informative.Common;
+namespace PrimeBooking.Domain.Common;
 
 public static class ErrorType
 {

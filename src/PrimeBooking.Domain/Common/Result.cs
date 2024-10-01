@@ -1,6 +1,4 @@
-using System.Net;
-
-namespace PrimeBooking.Domain.Informative.Common;
+namespace PrimeBooking.Domain.Common;
 
 public class Result
 {
