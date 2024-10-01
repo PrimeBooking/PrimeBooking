@@ -19,7 +19,7 @@ jobs:
                   dotnet-version: '8.0.x'
 
             - name: Restore
-              run: dotnet restore ./Hotel.sln
+              run: dotnet restore ./PrimeBooking.sln
 
             - name: Build
-              run: dotnet build ./Hotel.sln --configuration Release --no-restore
+              run: dotnet build ./PrimeBooking.sln --configuration Release --no-restore
