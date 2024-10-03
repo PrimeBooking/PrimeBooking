@@ -1,4 +1,4 @@
-namespace PrimeBooking.Domain.Tests.Hotel;
+namespace PrimeBooking.Domain.Tests.HotelDomain;
 
 public class ContactInformationDomainTests
 {
@@ -36,6 +36,6 @@ public class ContactInformationDomainTests
             }
         };
 
-    private static Result<ContactInformation> ValidContactInformation =>
+    public static Result<ContactInformation> ValidContactInformation =>
         ContactInformation.Create("+14842634807", "test@gmail.com", AddressDomainTests.ValidAddress.Value!);
 }

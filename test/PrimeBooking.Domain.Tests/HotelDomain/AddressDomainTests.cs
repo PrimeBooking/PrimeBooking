@@ -1,4 +1,4 @@
-namespace PrimeBooking.Domain.Tests.Hotel;
+namespace PrimeBooking.Domain.Tests.HotelDomain;
 
 public class AddressDomainTests
 {

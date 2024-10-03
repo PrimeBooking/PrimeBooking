@@ -11,11 +11,14 @@ public sealed class Hotel : AggregateRoot<HotelId>
     public ICollection<Facility> Facilities { get; private set; }
     public ICollection<Star>? Stars { get; private set; }
     
-    public Result<Hotel> Create(string name, int capacity, ContactInformation contactInformation, ICollection<Facility> facilities, ICollection<Star>? stars)
+    public static Result<Hotel> Create(HotelId hotelId, string name, int capacity, ContactInformation contactInformation, ICollection<Facility> facilities, ICollection<Star>? stars)
     {
+        if (hotelId.Id == Guid.Empty)
+            return Result.Failure<Hotel>(HotelErrors.EmptyValue("Guid can't be empty"));
+        
         if (string.IsNullOrEmpty(name)) return Result.Failure<Hotel>(HotelErrors.EmptyValue("Hotel Name can't be null or empty"));
         
-        if (Capacity <= 0) return Result.Failure<Hotel>(HotelErrors.LessZeroCapacityValue);
+        if (capacity <= 0) return Result.Failure<Hotel>(HotelErrors.LessZeroCapacityValue);
 
         var contactInformationResult = ContactInformation.Create(contactInformation.Phone, contactInformation.Email,
             contactInformation.Address);
@@ -23,10 +26,10 @@ public sealed class Hotel : AggregateRoot<HotelId>
         if (contactInformationResult.IsFailure) 
             return Result.Failure<Hotel>(contactInformationResult.Error ?? throw new ArgumentNullException(nameof(contactInformationResult.Error), "Error is nullable"));
         
-        var hotel = new Hotel(name, capacity, contactInformationResult.Value, facilities, stars);
+        var hotel = new Hotel(hotelId, name, capacity, contactInformationResult.Value, facilities, stars);
         
-        var @event = new HotelCreatedEvent(name, Capacity, ContactInformation, Facilities, Stars);
-        RaiseDomainEvent(@event);
+        var @event = new HotelCreatedEvent(hotelId, name, capacity, contactInformationResult.Value, facilities, stars);
+        hotel.RaiseDomainEvent(@event);
 
         return Result.Success(hotel);
     }
@@ -36,7 +39,7 @@ public sealed class Hotel : AggregateRoot<HotelId>
         if (hotelId.Id == Guid.Empty)
             return Result.Failure(HotelErrors.EmptyValue("Guid can't be empty"));
 
-        var @event = new HotelDeletedEvent(Id);
+        var @event = new HotelDeletedEvent(hotelId);
         RaiseDomainEvent(@event);
 
         return Result.Success();
@@ -46,24 +49,24 @@ public sealed class Hotel : AggregateRoot<HotelId>
     {
         if (capacity <= 0) return Result.Failure<Hotel>(HotelErrors.LessZeroCapacityValue);
         
-        var hotel = new Hotel(Name, capacity, ContactInformation, Facilities, Stars);
+        Capacity = capacity;
         
         var @event = new CapacityUpdatedEvent(capacity);
         RaiseDomainEvent(@event);
 
-        return Result.Success(hotel);
+        return Result.Success(this);
     }
 
     public Result<Hotel> UpdateStars(ICollection<Star>? stars)
     {
         if (stars is null || stars.Count == 0) return Result.Failure<Hotel>(HotelErrors.EmptyValue("Stars can't be empty or null"));
         
-        var hotel = new Hotel(Name, Capacity, ContactInformation, Facilities, stars);
+        Stars = stars;
         
         var @event = new StarsUpdatedEvent(stars);
         RaiseDomainEvent(@event);
 
-        return Result.Success(hotel);
+        return Result.Success(this);
     }
     
     public Result<Hotel> UpdateContactInformation(ContactInformation contactInformation)
@@ -74,18 +77,19 @@ public sealed class Hotel : AggregateRoot<HotelId>
         if (contactInformationResult.IsFailure) 
             return Result.Failure<Hotel>(contactInformationResult.Error ?? throw new ArgumentNullException(nameof(contactInformationResult.Error), "Error is nullable"));
         
-        var hotel = new Hotel(Name, Capacity, contactInformation, Facilities, Stars);
+        ContactInformation = contactInformation;
         
         var @event = new ContactInformationUpdatedEvent(contactInformation);
         RaiseDomainEvent(@event);
 
-        return Result.Success(hotel);
+        return Result.Success(this);
     }
     
     private Hotel() { }
     
-    private Hotel(string name, int capacity, ContactInformation contactInformation, ICollection<Facility> facilities, ICollection<Star>? stars)
+    private Hotel(HotelId hotelId, string name, int capacity, ContactInformation contactInformation, ICollection<Facility> facilities, ICollection<Star>? stars)
     {
+        Id = hotelId;
         Name = name;
         Capacity = capacity;
         ContactInformation = contactInformation;
