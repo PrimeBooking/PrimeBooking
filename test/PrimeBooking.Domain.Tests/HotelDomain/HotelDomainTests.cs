@@ -62,6 +62,22 @@ public class HotelDomainTests
         hotel.GetDomainEvents().First().Should().BeOfType<HotelDeletedEvent>(); 
     }
     
+        
+    [Fact]
+    public void UpdateContactInformation_WithValidContactInformation_ShouldReturnSuccessResult()
+    {
+        var hotel = ValidHotel.Value!;
+        var contactInformation = ContactInformationDomainTests.ValidContactInformation.Value;
+        
+        var result = hotel.UpdateContactInformation(contactInformation!);
+        
+        result.IsSuccess.Should().BeTrue();
+        result.IsFailure.Should().BeFalse();
+        result.Error.Should().BeNull();
+        result.Value.As<Hotel.Hotel>().ContactInformation.Should().BeEquivalentTo(contactInformation);
+        result.Value!.GetDomainEvents().First().Should().BeOfType<ContactInformationUpdatedEvent>();
+    }
+    
     [Fact]
     public void UpdateCapacity_WithZeroCapacity_ShouldReturnFailureResult()
     {
@@ -95,6 +111,38 @@ public class HotelDomainTests
     }
     
     [Fact]
+    public void UpdateFacilities_WithEmptyFacilities_ShouldReturnFailureResult()
+    {
+        var expectedError = ErrorFactory.BuildError(
+            ErrorCode.Validation,
+            ErrorType.InvalidFormat,
+            "Facilities can't be empty or null",
+            HttpStatusCode.UnprocessableEntity
+        );
+        
+        var result = ValidHotel.Value!.UpdateFacilities([]);
+        
+        result.IsSuccess.Should().BeFalse();
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().BeEquivalentTo(expectedError);
+    }
+        
+    [Fact]
+    public void UpdateFacilities_WithValidFacilities_ShouldReturnSuccessResult()
+    {
+        var hotel = ValidHotel.Value!;
+        var updatedFacilities = new[] { Facility.Restaurant, Facility.Gym };
+        
+        var result = hotel.UpdateFacilities(updatedFacilities);
+        
+        result.IsSuccess.Should().BeTrue();
+        result.IsFailure.Should().BeFalse();
+        result.Error.Should().BeNull();
+        result.Value.As<Hotel.Hotel>().Facilities.Should().BeEquivalentTo(updatedFacilities);
+        result.Value!.GetDomainEvents().First().Should().BeOfType<FacilitiesUpdatedEvent>(); 
+    }
+    
+    [Fact]
     public void UpdateStars_WithEmptyStars_ShouldReturnFailureResult()
     {
         var expectedError = ErrorFactory.BuildError(
@@ -124,21 +172,6 @@ public class HotelDomainTests
         result.Error.Should().BeNull();
         result.Value.As<Hotel.Hotel>().Stars.Should().BeEquivalentTo(updatedStars);
         result.Value!.GetDomainEvents().First().Should().BeOfType<StarsUpdatedEvent>(); 
-    }
-    
-    [Fact]
-    public void UpdateContactInformation_WithValidContactInformation_ShouldReturnSuccessResult()
-    {
-        var hotel = ValidHotel.Value!;
-        var contactInformation = ContactInformationDomainTests.ValidContactInformation.Value;
-        
-        var result = hotel.UpdateContactInformation(contactInformation!);
-        
-        result.IsSuccess.Should().BeTrue();
-        result.IsFailure.Should().BeFalse();
-        result.Error.Should().BeNull();
-        result.Value.As<Hotel.Hotel>().ContactInformation.Should().BeEquivalentTo(contactInformation);
-        result.Value!.GetDomainEvents().First().Should().BeOfType<ContactInformationUpdatedEvent>();
     }
     
     public static IEnumerable<object[]> InvalidHotels =>
