@@ -38,9 +38,9 @@ public class Result<TValue> : Result
         _value = value;
     }
 
-    public TValue Value => IsSuccess
+    public TValue? Value => IsSuccess
         ? _value!
-        : throw new InvalidOperationException("Failed Result can't be accessed");
+        : default;
 
     public static implicit operator Result<TValue>(TValue value) => Create(value);
 }

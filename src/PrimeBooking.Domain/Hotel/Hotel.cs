@@ -13,7 +13,7 @@ public sealed class Hotel : AggregateRoot<HotelId>
     
     public Result<Hotel> Create(string name, int capacity, ContactInformation contactInformation, ICollection<Facility> facilities, ICollection<Star>? stars)
     {
-        if (string.IsNullOrEmpty(name)) return Result.Failure<Hotel>(HotelErrors.EmptyNameValue);
+        if (string.IsNullOrEmpty(name)) return Result.Failure<Hotel>(HotelErrors.EmptyValue("Hotel Name can't be null or empty"));
         
         if (Capacity <= 0) return Result.Failure<Hotel>(HotelErrors.LessZeroCapacityValue);
 
@@ -34,20 +34,50 @@ public sealed class Hotel : AggregateRoot<HotelId>
     public Result Delete(HotelId hotelId)
     {
         if (hotelId.Id == Guid.Empty)
-            return Result.Failure(HotelErrors.EmptyGuidValue);
-        
-        RaiseDomainEvent(new HotelDeletedEvent(Id));
+            return Result.Failure(HotelErrors.EmptyValue("Guid can't be empty"));
+
+        var @event = new HotelDeletedEvent(Id);
+        RaiseDomainEvent(@event);
 
         return Result.Success();
+    }
+    
+    public Result<Hotel> UpdateCapacity(int capacity)
+    {
+        if (capacity <= 0) return Result.Failure<Hotel>(HotelErrors.LessZeroCapacityValue);
+        
+        var hotel = new Hotel(Name, capacity, ContactInformation, Facilities, Stars);
+        
+        var @event = new CapacityUpdatedEvent(capacity);
+        RaiseDomainEvent(@event);
+
+        return Result.Success(hotel);
     }
 
     public Result<Hotel> UpdateStars(ICollection<Star>? stars)
     {
-        if (stars is null || stars.Count == 0) return Result.Failure<Hotel>(HotelErrors.EmptyNameValue);
+        if (stars is null || stars.Count == 0) return Result.Failure<Hotel>(HotelErrors.EmptyValue("Stars can't be empty or null"));
         
         var hotel = new Hotel(Name, Capacity, ContactInformation, Facilities, stars);
         
-        RaiseDomainEvent(new StarsUpdatedEvent(stars));
+        var @event = new StarsUpdatedEvent(stars);
+        RaiseDomainEvent(@event);
+
+        return Result.Success(hotel);
+    }
+    
+    public Result<Hotel> UpdateContactInformation(ContactInformation contactInformation)
+    {
+        var contactInformationResult = ContactInformation.Create(contactInformation.Phone, contactInformation.Email,
+            contactInformation.Address);
+        
+        if (contactInformationResult.IsFailure) 
+            return Result.Failure<Hotel>(contactInformationResult.Error ?? throw new ArgumentNullException(nameof(contactInformationResult.Error), "Error is nullable"));
+        
+        var hotel = new Hotel(Name, Capacity, contactInformation, Facilities, Stars);
+        
+        var @event = new ContactInformationUpdatedEvent(contactInformation);
+        RaiseDomainEvent(@event);
 
         return Result.Success(hotel);
     }

@@ -10,19 +10,26 @@ public record ContactInformation
     public string Phone { get; private set; }
     [EmailAddress(ErrorMessage = "Invalid Email Address")]
     public string Email { get; private set; }
-    public Address Address { get; private set; }
+    public Address? Address { get; private set; }
     
-    public static Result<ContactInformation> Create(string phone, string email, Address address)
+    public static Result<ContactInformation> Create(string phone, string email, Address? address)
     {
-        if (string.IsNullOrEmpty(phone) || string.IsNullOrEmpty(email)) 
-            return Result.Failure<ContactInformation>(ContactInformationErrors.EmptyValue("Country is empty or invalid"));
+        Result<Address>? addressResult = default;
+        if (string.IsNullOrEmpty(phone)) 
+            return Result.Failure<ContactInformation>(ContactInformationErrors.EmptyValue("Phone number is empty"));
         
-        var addressResult = Address.Create(address.Country, address.City, address.Street, address.StateOrRegion, address.PostCode);
+        if (string.IsNullOrEmpty(email)) 
+            return Result.Failure<ContactInformation>(ContactInformationErrors.EmptyValue("Email address is empty"));
 
-        if (addressResult.IsFailure) 
-            return Result.Failure<ContactInformation>(addressResult.Error ?? throw new ArgumentNullException(nameof(addressResult.Error), "Error is nullable"));
-        
-        var contact = new ContactInformation(phone, email, addressResult.Value);
+        if (address is not null)
+        {
+            addressResult = Address.Create(address.Country, address.City, address.Street, address.StateOrRegion, address.PostCode);
+            
+            if (addressResult.IsFailure) 
+                return Result.Failure<ContactInformation>(addressResult.Error ?? throw new ArgumentNullException(nameof(addressResult.Error), "Error is nullable"));
+        }
+
+        var contact = new ContactInformation(phone, email, addressResult?.Value);
         return new Result<ContactInformation>(contact, true, null);
     }
     
@@ -30,7 +37,7 @@ public record ContactInformation
     {
     }
     
-    private ContactInformation(string phone, string email, Address address)
+    private ContactInformation(string phone, string email, Address? address)
     {
         Phone = phone;
         Email = email;

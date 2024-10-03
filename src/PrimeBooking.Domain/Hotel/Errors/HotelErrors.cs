@@ -8,6 +8,13 @@ public static class HotelErrors
         "Hotel was not found",
         HttpStatusCode.NotFound
     );
+    
+    public static Error EmptyValue(string detail) =>  ErrorFactory.BuildError(
+        ErrorCode.Validation,
+        ErrorType.InvalidFormat,
+        detail,
+        HttpStatusCode.UnprocessableEntity
+    );
 
     public static readonly Error EmptyNameValue =  ErrorFactory.BuildError(
         ErrorCode.Validation,
@@ -20,13 +27,6 @@ public static class HotelErrors
         ErrorCode.Validation,
         ErrorType.InvalidFormat,
         "Capacity can't be less or equal zero",
-        HttpStatusCode.UnprocessableEntity
-    );
-    
-    public static readonly Error EmptyGuidValue =  ErrorFactory.BuildError(
-        ErrorCode.Validation,
-        ErrorType.InvalidFormat,
-        "Guid can't be empty",
         HttpStatusCode.UnprocessableEntity
     );
 }
