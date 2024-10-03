@@ -26,3 +26,6 @@ jobs:
 
             - name: Build
               run: dotnet build ./PrimeBooking.sln --configuration Release --no-restore
+              
+            - name: Test
+              run: dotnet test ./PrimeBooking.sln --no-build --verbosity normal
