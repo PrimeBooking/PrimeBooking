@@ -73,6 +73,16 @@ public sealed class Hotel : AggregateRoot<HotelId>
         return Result.Success(this);
     }
     
+    public Result<Hotel> AddFacility(Facility facility)
+    {
+        Facilities.Add(facility);
+        
+        var @event = new FacilityAddedEvent(facility);
+        RaiseDomainEvent(@event);
+
+        return Result.Success(this);
+    }
+    
     public Result<Hotel> UpdateFacilities(ICollection<Facility>? facilities)
     {
         if (facilities is null || facilities.Count == 0) return Result.Failure<Hotel>(HotelErrors.EmptyValue("Facilities can't be empty or null"));
@@ -80,6 +90,16 @@ public sealed class Hotel : AggregateRoot<HotelId>
         Facilities = facilities;
         
         var @event = new FacilitiesUpdatedEvent(facilities);
+        RaiseDomainEvent(@event);
+
+        return Result.Success(this);
+    }
+    
+    public Result<Hotel> AddStar(Star star)
+    {
+        Stars?.Add(star);
+
+        var @event = new StarAddedEvent(star);
         RaiseDomainEvent(@event);
 
         return Result.Success(this);

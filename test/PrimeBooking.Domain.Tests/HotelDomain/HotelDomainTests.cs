@@ -111,6 +111,21 @@ public class HotelDomainTests
     }
     
     [Fact]
+    public void AddFacility_WithValidFacility_ShouldReturnSuccessResult()
+    {
+        var hotel = ValidHotel.Value!;
+        var updatedFacilities = new[] { Facility.Restaurant, Facility.Gym };
+        
+        var result = hotel.AddFacility(Facility.Gym);
+        
+        result.IsSuccess.Should().BeTrue();
+        result.IsFailure.Should().BeFalse();
+        result.Error.Should().BeNull();
+        result.Value.As<Hotel.Hotel>().Facilities.Should().BeEquivalentTo(updatedFacilities);
+        result.Value!.GetDomainEvents().First().Should().BeOfType<FacilityAddedEvent>(); 
+    }
+    
+    [Fact]
     public void UpdateFacilities_WithEmptyFacilities_ShouldReturnFailureResult()
     {
         var expectedError = ErrorFactory.BuildError(
@@ -140,6 +155,21 @@ public class HotelDomainTests
         result.Error.Should().BeNull();
         result.Value.As<Hotel.Hotel>().Facilities.Should().BeEquivalentTo(updatedFacilities);
         result.Value!.GetDomainEvents().First().Should().BeOfType<FacilitiesUpdatedEvent>(); 
+    }
+    
+    [Fact]
+    public void AddStar_WithValidStar_ShouldReturnSuccessResult()
+    {
+        var hotel = ValidHotel.Value!;
+        var updatedStars = new[] { Star.Five, Star.Four };
+        
+        var result = hotel.AddStar(Star.Four);
+        
+        result.IsSuccess.Should().BeTrue();
+        result.IsFailure.Should().BeFalse();
+        result.Error.Should().BeNull();
+        result.Value.As<Hotel.Hotel>().Stars.Should().BeEquivalentTo(updatedStars);
+        result.Value!.GetDomainEvents().First().Should().BeOfType<StarAddedEvent>(); 
     }
     
     [Fact]
