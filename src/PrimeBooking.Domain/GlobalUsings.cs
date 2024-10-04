@@ -1,4 +1,5 @@
 // Global using directives
 
+global using System.Net;
 global using Mediator;
-global using PrimeBooking.Domain.Informative.Common;
+global using PrimeBooking.Domain.Common;
