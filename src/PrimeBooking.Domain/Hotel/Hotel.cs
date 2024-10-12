@@ -20,7 +20,7 @@ public sealed class Hotel : AggregateRoot<HotelId>
         
         if (capacity <= 0) return Result.Failure<Hotel>(HotelErrors.LessZeroCapacityValue);
 
-        var contactInformationResult = ContactInformation.Create(contactInformation.Phone, contactInformation.Email,
+        Result<ContactInformation> contactInformationResult = ContactInformation.Create(contactInformation.Phone, contactInformation.Email,
             contactInformation.Address);
         
         if (contactInformationResult.IsFailure) 
@@ -47,7 +47,7 @@ public sealed class Hotel : AggregateRoot<HotelId>
     
     public Result<Hotel> UpdateContactInformation(ContactInformation contactInformation)
     {
-        var contactInformationResult = ContactInformation.Create(contactInformation.Phone, contactInformation.Email,
+        Result<ContactInformation> contactInformationResult = ContactInformation.Create(contactInformation.Phone, contactInformation.Email,
             contactInformation.Address);
         
         if (contactInformationResult.IsFailure) 
