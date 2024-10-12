@@ -10,4 +10,8 @@
       <Folder Include="Hotel\" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\PrimeBooking.Domain\PrimeBooking.Domain.csproj" />
+    </ItemGroup>
+
 </Project>
