@@ -1,6 +1,6 @@
 namespace PrimeBooking.Domain.Common;
 
-public interface IAggregateRoot<out TEntityId>
+public interface IAggregateRoot<out TEntityId> where TEntityId : TypedId<Guid>
 {
     TEntityId Id { get; }
     long Version { get; }

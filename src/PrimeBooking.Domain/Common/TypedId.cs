@@ -4,7 +4,7 @@ public record TypedId<T>
 {
     public T Value { get; }
 
-    protected TypedId(T value)
+    public TypedId(T value)
     {
         if (value is null)
             throw new ArgumentNullException(nameof(value));

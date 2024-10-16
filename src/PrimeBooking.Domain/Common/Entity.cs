@@ -2,7 +2,7 @@ namespace PrimeBooking.Domain.Common;
 
 public abstract class Entity<TEntityId>
 {
-    public TEntityId Id { get; init; }    
+    public TEntityId Id { get; protected init; } 
     
     protected Entity(TEntityId id)
     {
