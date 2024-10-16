@@ -2,7 +2,8 @@ using System.Text.Json.Serialization;
 
 namespace PrimeBooking.Domain.Common;
 
-public class AggregateRoot<TEntityId> : Entity<TEntityId>, IAggregateRoot<TEntityId>
+public class AggregateRoot<TEntityId> : Entity<TEntityId>, IAggregateRoot<TEntityId> 
+    where TEntityId : TypedId<Guid>
 {
     public long Version { get; protected set; }
     public IReadOnlyList<IDomainEvent> GetDomainEvents() => _domainEvents.ToList();
