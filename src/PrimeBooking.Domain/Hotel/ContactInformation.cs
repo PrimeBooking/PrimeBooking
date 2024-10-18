@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 using PrimeBooking.Domain.Hotel.Errors;
 
 namespace PrimeBooking.Domain.Hotel;
@@ -37,7 +38,8 @@ public record ContactInformation
     {
     }
     
-    private ContactInformation(string phone, string email, Address? address)
+    [JsonConstructor]
+    public ContactInformation(string phone, string email, Address? address)
     {
         Phone = phone;
         Email = email;

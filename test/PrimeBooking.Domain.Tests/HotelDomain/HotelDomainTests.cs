@@ -14,7 +14,7 @@ public class HotelDomainTests
     [Fact]
     public void Create_WithValidBody_ShouldReturnSuccessResult()
     {
-        var hotel = Hotel.Hotel.Create(
+        Result<Hotel.Hotel> hotel = Hotel.Hotel.Create(
             new HotelId(Guid.NewGuid()),
             "Hotel 1", 
             200, 
@@ -34,14 +34,14 @@ public class HotelDomainTests
     [Fact]
     public void Delete_WithInvalidId_ShouldReturnFailureResult()
     {
-        var expectedError = ErrorFactory.BuildError(
+        Error expectedError = ErrorFactory.BuildError(
             ErrorCode.Validation,
             ErrorType.InvalidFormat,
             "Guid can't be empty",
             HttpStatusCode.UnprocessableEntity
         );
         
-        var result = ValidHotel.Value!.Delete(new HotelId(Guid.Empty));
+        Result result = ValidHotel.Value!.Delete(new HotelId(Guid.Empty));
         
         result.IsSuccess.Should().BeFalse();
         result.IsFailure.Should().BeTrue();
@@ -51,9 +51,9 @@ public class HotelDomainTests
     [Fact]
     public void Delete_WithValidId_ShouldBeSuccessful()
     {
-        var hotel = ValidHotel.Value!;
+        Hotel.Hotel hotel = ValidHotel.Value!;
         
-        var result = hotel.Delete(new HotelId(Guid.NewGuid()));
+        Result result = hotel.Delete(new HotelId(Guid.NewGuid()));
         
         result.IsSuccess.Should().BeTrue();
         result.IsFailure.Should().BeFalse();
@@ -66,10 +66,10 @@ public class HotelDomainTests
     [Fact]
     public void UpdateContactInformation_WithValidContactInformation_ShouldReturnSuccessResult()
     {
-        var hotel = ValidHotel.Value!;
-        var contactInformation = ContactInformationDomainTests.ValidContactInformation.Value;
+        Hotel.Hotel hotel = ValidHotel.Value!;
+        ContactInformation? contactInformation = ContactInformationDomainTests.ValidContactInformation.Value;
         
-        var result = hotel.UpdateContactInformation(contactInformation!);
+        Result<Hotel.Hotel> result = hotel.UpdateContactInformation(contactInformation!);
         
         result.IsSuccess.Should().BeTrue();
         result.IsFailure.Should().BeFalse();
@@ -81,15 +81,15 @@ public class HotelDomainTests
     [Fact]
     public void UpdateCapacity_WithZeroCapacity_ShouldReturnFailureResult()
     {
-        var hotel = ValidHotel.Value!;
-        var expectedError = ErrorFactory.BuildError(
+        Hotel.Hotel hotel = ValidHotel.Value!;
+        Error expectedError = ErrorFactory.BuildError(
             ErrorCode.Validation,
             ErrorType.InvalidFormat,
             "Capacity can't be less or equal zero",
             HttpStatusCode.UnprocessableEntity
         );
         
-        var result = hotel.UpdateCapacity(0);
+        Result<Hotel.Hotel> result = hotel.UpdateCapacity(0);
         
         result.IsSuccess.Should().BeFalse();
         result.IsFailure.Should().BeTrue();
@@ -99,9 +99,9 @@ public class HotelDomainTests
     [Fact]
     public void UpdateCapacity_WithValidCapacity_ShouldReturnSuccessResult()
     {
-        var hotel = ValidHotel.Value!;
+        Hotel.Hotel hotel = ValidHotel.Value!;
         
-        var result = hotel.UpdateCapacity(300);
+        Result<Hotel.Hotel> result = hotel.UpdateCapacity(300);
         
         result.IsSuccess.Should().BeTrue();
         result.IsFailure.Should().BeFalse();
@@ -113,10 +113,10 @@ public class HotelDomainTests
     [Fact]
     public void AddFacility_WithValidFacility_ShouldReturnSuccessResult()
     {
-        var hotel = ValidHotel.Value!;
-        var updatedFacilities = new[] { Facility.Restaurant, Facility.Gym };
+        Hotel.Hotel hotel = ValidHotel.Value!;
+        Facility[] updatedFacilities = [Facility.Restaurant, Facility.Gym];
         
-        var result = hotel.AddFacility(Facility.Gym);
+        Result<Hotel.Hotel> result = hotel.AddFacility(Facility.Gym);
         
         result.IsSuccess.Should().BeTrue();
         result.IsFailure.Should().BeFalse();
@@ -128,14 +128,14 @@ public class HotelDomainTests
     [Fact]
     public void UpdateFacilities_WithEmptyFacilities_ShouldReturnFailureResult()
     {
-        var expectedError = ErrorFactory.BuildError(
+        Error expectedError = ErrorFactory.BuildError(
             ErrorCode.Validation,
             ErrorType.InvalidFormat,
             "Facilities can't be empty or null",
             HttpStatusCode.UnprocessableEntity
         );
         
-        var result = ValidHotel.Value!.UpdateFacilities([]);
+        Result<Hotel.Hotel> result = ValidHotel.Value!.UpdateFacilities([]);
         
         result.IsSuccess.Should().BeFalse();
         result.IsFailure.Should().BeTrue();
@@ -145,10 +145,10 @@ public class HotelDomainTests
     [Fact]
     public void UpdateFacilities_WithValidFacilities_ShouldReturnSuccessResult()
     {
-        var hotel = ValidHotel.Value!;
-        var updatedFacilities = new[] { Facility.Restaurant, Facility.Gym };
+        Hotel.Hotel hotel = ValidHotel.Value!;
+        Facility[] updatedFacilities = [Facility.Restaurant, Facility.Gym];
         
-        var result = hotel.UpdateFacilities(updatedFacilities);
+        Result<Hotel.Hotel> result = hotel.UpdateFacilities(updatedFacilities);
         
         result.IsSuccess.Should().BeTrue();
         result.IsFailure.Should().BeFalse();
@@ -160,10 +160,10 @@ public class HotelDomainTests
     [Fact]
     public void AddStar_WithValidStar_ShouldReturnSuccessResult()
     {
-        var hotel = ValidHotel.Value!;
-        var updatedStars = new[] { Star.Five, Star.Four };
+        Hotel.Hotel hotel = ValidHotel.Value!;
+        Star[] updatedStars = [Star.Five, Star.Four];
         
-        var result = hotel.AddStar(Star.Four);
+        Result<Hotel.Hotel> result = hotel.AddStar(Star.Four);
         
         result.IsSuccess.Should().BeTrue();
         result.IsFailure.Should().BeFalse();
@@ -175,14 +175,14 @@ public class HotelDomainTests
     [Fact]
     public void UpdateStars_WithEmptyStars_ShouldReturnFailureResult()
     {
-        var expectedError = ErrorFactory.BuildError(
+        Error expectedError = ErrorFactory.BuildError(
             ErrorCode.Validation,
             ErrorType.InvalidFormat,
             "Stars can't be empty or null",
             HttpStatusCode.UnprocessableEntity
         );
         
-        var result = ValidHotel.Value!.UpdateStars([]);
+        Result<Hotel.Hotel> result = ValidHotel.Value!.UpdateStars([]);
         
         result.IsSuccess.Should().BeFalse();
         result.IsFailure.Should().BeTrue();
@@ -192,10 +192,10 @@ public class HotelDomainTests
     [Fact]
     public void UpdateStars_WithValidStars_ShouldReturnSuccessResult()
     {
-        var hotel = ValidHotel.Value!;
-        var updatedStars = new[] { Star.Four, Star.Five };
+        Hotel.Hotel hotel = ValidHotel.Value!;
+        Star[] updatedStars = [Star.Four, Star.Five];
         
-        var result = hotel.UpdateStars(updatedStars);
+        Result<Hotel.Hotel> result = hotel.UpdateStars(updatedStars);
         
         result.IsSuccess.Should().BeTrue();
         result.IsFailure.Should().BeFalse();
@@ -243,7 +243,7 @@ public class HotelDomainTests
     {
         get
         {
-            var hotel = Hotel.Hotel.Create(
+            Result<Hotel.Hotel> hotel = Hotel.Hotel.Create(
                 new HotelId(Guid.NewGuid()),
                 "Hotel 1", 
                 200, 

@@ -7,7 +7,13 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Hotel\" />
+      <ProjectReference Include="..\PrimeBooking.Domain\PrimeBooking.Domain.csproj" />
+      <ProjectReference Include="..\PrimeBooking.Serialization\PrimeBooking.Serialization.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="EventStore.Client.Grpc" Version="23.3.5" />
+      <PackageReference Include="EventStore.Client.Grpc.Streams" Version="23.3.5" />
     </ItemGroup>
 
 </Project>
