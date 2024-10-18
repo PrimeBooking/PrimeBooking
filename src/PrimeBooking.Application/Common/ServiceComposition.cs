@@ -13,6 +13,7 @@ public static class ServiceComposition
     private static IServiceCollection AddMappers(this IServiceCollection services)
     {
         services.AddTransient<IEventDataMapper, EventDataMapper>();
+        services.AddTransient<IResolvedEventMapper, ResolvedEventMapper>();
 
         return services;
     }
