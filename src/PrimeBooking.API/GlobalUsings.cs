@@ -1,4 +1,5 @@
 global using System.Text.Json;
+global using MassTransit;
 global using Microsoft.AspNetCore.Mvc;
 global using PrimeBooking.API.ActionResults;
 global using PrimeBooking.Application.Common;
