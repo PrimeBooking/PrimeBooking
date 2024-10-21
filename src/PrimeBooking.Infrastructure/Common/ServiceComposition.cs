@@ -1,3 +1,5 @@
+using EventBus.Messages.Common;
+using MassTransit;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using PrimeBooking.Domain.Hotel;
@@ -13,6 +15,8 @@ public static class ServiceComposition
         AddEventStore(services, configuration);
 
         AddRepository(services);
+        
+        AddRabbitMq(services, configuration);
         
         return services;
     }
@@ -32,6 +36,25 @@ public static class ServiceComposition
     private static IServiceCollection AddRepository(this IServiceCollection services)
     {
         services.AddTransient<IEventStoreRepository<Hotel>, EventStoreRepository<Hotel>>();
+
+        return services;
+    }
+
+    private static IServiceCollection AddRabbitMq(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddMassTransit(busRegistrationConfig => 
+        {
+            //configuration.AddConsumer<BasketCheckoutConsumer>();
+    
+            busRegistrationConfig.UsingRabbitMq((context, configurator) => {
+                
+                configurator.Host(configuration["EventBusSettings:HostAddress"]);
+        
+                configurator.ReceiveEndpoint(Constants.HotelDataTransferQueue, c => {
+                    //c.ConfigureConsumer<BasketCheckoutConsumer>(context);
+                });
+            });
+        });
 
         return services;
     }

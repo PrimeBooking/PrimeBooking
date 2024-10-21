@@ -31,6 +31,6 @@ public class HotelController(IActionResultCreator actionResultCreator) : Control
         // Result<AppendEventsResult> result = await eventStoreRepository.AppendEventsAsync(hotel.Value!, 0);
         // return actionResultCreator.GetResponse(result, default);
 
-        return null;
+        return Accepted();
     }
 }

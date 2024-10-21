@@ -1,24 +1,9 @@
-using EventBus.Messages.Common;
-using MassTransit;
-
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
 
 builder.Services.AddTransient<IActionResultCreator, ActionResultCreator>();
-
-builder.Services.AddMassTransit(configuration => {
-    //configuration.AddConsumer<CheckCredentialsConsumer>();
-    
-    configuration.UsingRabbitMq((context, configurator) => {
-        configurator.Host(builder.Configuration["EventBusSettings:HostAddress"]);
-        
-        configurator.ReceiveEndpoint(Constants.HotelDataTransferQueue, receiveEndpointConfigurator => {
-            //receiveEndpointConfigurator.ConfigureConsumer<CheckCredentialsConsumer>(context);
-        });
-    });
-});
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

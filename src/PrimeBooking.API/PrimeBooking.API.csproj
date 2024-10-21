@@ -8,14 +8,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="MassTransit" Version="8.3.0" />
-        <PackageReference Include="MassTransit.RabbitMQ" Version="8.3.0" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.0"/>
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0"/>
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\BuildingBlocks\EventBus.Messages\EventBus.Messages.csproj" />
         <ProjectReference Include="..\PrimeBooking.Application\PrimeBooking.Application.csproj" />
         <ProjectReference Include="..\PrimeBooking.Infrastructure\PrimeBooking.Infrastructure.csproj" />
     </ItemGroup>
