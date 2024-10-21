@@ -16,6 +16,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrimeBooking.Domain.Tests",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrimeBooking.Serialization", "src\PrimeBooking.Serialization\PrimeBooking.Serialization.csproj", "{082EE0D0-46D2-42DF-8BA6-D8EFB209A341}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildingBlocks", "BuildingBlocks", "{745C8C37-19A9-4E09-ABB4-8E1793621609}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventBus.Messages", "src\BuildingBlocks\EventBus.Messages\EventBus.Messages.csproj", "{A4B137D2-E1B0-4036-8F07-3F6D7EB12724}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -28,6 +32,7 @@ Global
 		{56630613-D833-4804-AA2F-CBF7EF5D7A90} = {5317EC28-D3A9-48DF-9EA8-95409D730A67}
 		{D3BAE318-898D-4F30-A1E8-DBDC1834DB09} = {4E1C3A47-731E-4485-B5C4-EEDB1C8D38C2}
 		{082EE0D0-46D2-42DF-8BA6-D8EFB209A341} = {5317EC28-D3A9-48DF-9EA8-95409D730A67}
+		{A4B137D2-E1B0-4036-8F07-3F6D7EB12724} = {745C8C37-19A9-4E09-ABB4-8E1793621609}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{DA314A38-B873-4AC8-BFCB-266ED389E12B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -54,5 +59,9 @@ Global
 		{082EE0D0-46D2-42DF-8BA6-D8EFB209A341}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{082EE0D0-46D2-42DF-8BA6-D8EFB209A341}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{082EE0D0-46D2-42DF-8BA6-D8EFB209A341}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4B137D2-E1B0-4036-8F07-3F6D7EB12724}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4B137D2-E1B0-4036-8F07-3F6D7EB12724}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4B137D2-E1B0-4036-8F07-3F6D7EB12724}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4B137D2-E1B0-4036-8F07-3F6D7EB12724}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
