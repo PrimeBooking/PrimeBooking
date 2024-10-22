@@ -1,0 +1,12 @@
+global using EventStore.Client;
+global using Microsoft.Extensions.DependencyInjection;
+global using Accommodation.Application.Mappers;
+global using Accommodation.Application.Mappers.Abstract;
+global using Accommodation.Application.Models;
+global using Accommodation.Domain.Hotel.Commands;
+global using Core.Domain.Common;
+global using Mediator;
+global using PrimeBooking.Serialization.Common;
+global using PrimeBooking.Serialization.EventsSerialization;
+global using PrimeBooking.Serialization.MetadataSerialization;
+global using PrimeBooking.Serialization.Models;

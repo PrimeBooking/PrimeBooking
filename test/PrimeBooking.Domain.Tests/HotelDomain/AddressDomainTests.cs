@@ -1,3 +1,5 @@
+using Accommodation.Domain.Hotel;
+
 namespace PrimeBooking.Domain.Tests.HotelDomain;
 
 public class AddressDomainTests

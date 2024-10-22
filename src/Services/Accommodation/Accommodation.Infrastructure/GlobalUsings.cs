@@ -1,0 +1,13 @@
+global using System.Text;
+global using System.Text.Json;
+global using EventStore.Client;
+global using Accommodation.Application.Mappers.Abstract;
+global using Accommodation.Application.Models;
+global using Accommodation.Application.Repositories;
+global using Accommodation.Domain.Hotel;
+global using Accommodation.Infrastructure.EventStore.Repositories;
+global using Core.Domain.Common;
+global using EventBus.Messages.Common;
+global using MassTransit;
+global using Microsoft.Extensions.Configuration;
+global using Microsoft.Extensions.DependencyInjection;
