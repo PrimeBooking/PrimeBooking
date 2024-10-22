@@ -8,6 +8,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\..\PrimeBooking.Serialization\PrimeBooking.Serialization.csproj" />
+      <ProjectReference Include="..\..\Shared\PrimeBooking.Serialization\PrimeBooking.Serialization.csproj" />
       <ProjectReference Include="..\Accommodation.Domain\Accommodation.Domain.csproj" />
     </ItemGroup>
 
