@@ -18,7 +18,7 @@ public class ResultTValueTests
     [Fact]
     public void Failure_WithError_ShouldCreateFailedResult()
     {
-        var error = ErrorFactory.BuildError(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), HttpStatusCode.BadRequest);
+        Error error = ErrorFactory.BuildError(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), HttpStatusCode.BadRequest);
         
         var result = Result.Failure<ValueBody>(error);
         
@@ -42,7 +42,7 @@ public class ResultTValueTests
     [Fact]
     public void Create_WithNullableBody_ShouldCreateFailedResult()
     {
-        var error = ErrorFactory.BuildError(ErrorCode.UnhandledRequest,
+        Error error = ErrorFactory.BuildError(ErrorCode.UnhandledRequest,
             ErrorType.InvalidFormat,
             "Unable to create a Result object",
             HttpStatusCode.InternalServerError);

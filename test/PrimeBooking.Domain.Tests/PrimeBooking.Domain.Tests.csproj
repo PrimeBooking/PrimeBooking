@@ -25,7 +25,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\src\PrimeBooking.Domain\PrimeBooking.Domain.csproj" />
+      <ProjectReference Include="..\..\src\Services\Accommodation\Accommodation.Domain\Accommodation.Domain.csproj" />
     </ItemGroup>
 
 </Project>

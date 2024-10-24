@@ -15,7 +15,7 @@ public class ResultTests
     [Fact]
     public void Failure_WithError_ShouldCreateFailedResult()
     {
-        var error = ErrorFactory.BuildError(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), HttpStatusCode.BadRequest);
+        Error error = ErrorFactory.BuildError(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), HttpStatusCode.BadRequest);
         
         var result = Result.Failure(error);
         

@@ -1,10 +1,13 @@
+using Accommodation.Domain.Hotel;
+using PrimeBooking.Domain.Hotel.Events;
+
 namespace PrimeBooking.Domain.Tests.HotelDomain;
 
 public class HotelDomainTests
 {
     [Theory]
     [MemberData(nameof(InvalidHotels))]
-    public void Create_WithInvalidBody_ShouldReturnFailureResult(Result<Hotel.Hotel> hotel, Error error)
+    public void Create_WithInvalidBody_ShouldReturnFailureResult(Result<Accommodation.Domain.Hotel.Hotel> hotel, Error error)
     {
         hotel.IsSuccess.Should().BeFalse();
         hotel.IsFailure.Should().BeTrue();
@@ -14,7 +17,7 @@ public class HotelDomainTests
     [Fact]
     public void Create_WithValidBody_ShouldReturnSuccessResult()
     {
-        Result<Hotel.Hotel> hotel = Hotel.Hotel.Create(
+        Result<Accommodation.Domain.Hotel.Hotel> hotel = Accommodation.Domain.Hotel.Hotel.Create(
             new HotelId(Guid.NewGuid()),
             "Hotel 1", 
             200, 
@@ -51,7 +54,7 @@ public class HotelDomainTests
     [Fact]
     public void Delete_WithValidId_ShouldBeSuccessful()
     {
-        Hotel.Hotel hotel = ValidHotel.Value!;
+        Accommodation.Domain.Hotel.Hotel hotel = ValidHotel.Value!;
         
         Result result = hotel.Delete(new HotelId(Guid.NewGuid()));
         
@@ -66,22 +69,22 @@ public class HotelDomainTests
     [Fact]
     public void UpdateContactInformation_WithValidContactInformation_ShouldReturnSuccessResult()
     {
-        Hotel.Hotel hotel = ValidHotel.Value!;
+        Accommodation.Domain.Hotel.Hotel hotel = ValidHotel.Value!;
         ContactInformation? contactInformation = ContactInformationDomainTests.ValidContactInformation.Value;
         
-        Result<Hotel.Hotel> result = hotel.UpdateContactInformation(contactInformation!);
+        Result<Accommodation.Domain.Hotel.Hotel> result = hotel.UpdateContactInformation(contactInformation!);
         
         result.IsSuccess.Should().BeTrue();
         result.IsFailure.Should().BeFalse();
         result.Error.Should().BeNull();
-        result.Value.As<Hotel.Hotel>().ContactInformation.Should().BeEquivalentTo(contactInformation);
+        result.Value.As<Accommodation.Domain.Hotel.Hotel>().ContactInformation.Should().BeEquivalentTo(contactInformation);
         result.Value!.GetDomainEvents().First().Should().BeOfType<ContactInformationUpdatedEvent>();
     }
     
     [Fact]
     public void UpdateCapacity_WithZeroCapacity_ShouldReturnFailureResult()
     {
-        Hotel.Hotel hotel = ValidHotel.Value!;
+        Accommodation.Domain.Hotel.Hotel hotel = ValidHotel.Value!;
         Error expectedError = ErrorFactory.BuildError(
             ErrorCode.Validation,
             ErrorType.InvalidFormat,
@@ -89,7 +92,7 @@ public class HotelDomainTests
             HttpStatusCode.UnprocessableEntity
         );
         
-        Result<Hotel.Hotel> result = hotel.UpdateCapacity(0);
+        Result<Accommodation.Domain.Hotel.Hotel> result = hotel.UpdateCapacity(0);
         
         result.IsSuccess.Should().BeFalse();
         result.IsFailure.Should().BeTrue();
@@ -99,29 +102,29 @@ public class HotelDomainTests
     [Fact]
     public void UpdateCapacity_WithValidCapacity_ShouldReturnSuccessResult()
     {
-        Hotel.Hotel hotel = ValidHotel.Value!;
+        Accommodation.Domain.Hotel.Hotel hotel = ValidHotel.Value!;
         
-        Result<Hotel.Hotel> result = hotel.UpdateCapacity(300);
+        Result<Accommodation.Domain.Hotel.Hotel> result = hotel.UpdateCapacity(300);
         
         result.IsSuccess.Should().BeTrue();
         result.IsFailure.Should().BeFalse();
         result.Error.Should().BeNull();
-        result.Value.As<Hotel.Hotel>().Capacity.Should().Be(300);
+        result.Value.As<Accommodation.Domain.Hotel.Hotel>().Capacity.Should().Be(300);
         result.Value!.GetDomainEvents().First().Should().BeOfType<CapacityUpdatedEvent>(); 
     }
     
     [Fact]
     public void AddFacility_WithValidFacility_ShouldReturnSuccessResult()
     {
-        Hotel.Hotel hotel = ValidHotel.Value!;
+        Accommodation.Domain.Hotel.Hotel hotel = ValidHotel.Value!;
         Facility[] updatedFacilities = [Facility.Restaurant, Facility.Gym];
         
-        Result<Hotel.Hotel> result = hotel.AddFacility(Facility.Gym);
+        Result<Accommodation.Domain.Hotel.Hotel> result = hotel.AddFacility(Facility.Gym);
         
         result.IsSuccess.Should().BeTrue();
         result.IsFailure.Should().BeFalse();
         result.Error.Should().BeNull();
-        result.Value.As<Hotel.Hotel>().Facilities.Should().BeEquivalentTo(updatedFacilities);
+        result.Value.As<Accommodation.Domain.Hotel.Hotel>().Facilities.Should().BeEquivalentTo(updatedFacilities);
         result.Value!.GetDomainEvents().First().Should().BeOfType<FacilityAddedEvent>(); 
     }
     
@@ -135,7 +138,7 @@ public class HotelDomainTests
             HttpStatusCode.UnprocessableEntity
         );
         
-        Result<Hotel.Hotel> result = ValidHotel.Value!.UpdateFacilities([]);
+        Result<Accommodation.Domain.Hotel.Hotel> result = ValidHotel.Value!.UpdateFacilities([]);
         
         result.IsSuccess.Should().BeFalse();
         result.IsFailure.Should().BeTrue();
@@ -145,30 +148,30 @@ public class HotelDomainTests
     [Fact]
     public void UpdateFacilities_WithValidFacilities_ShouldReturnSuccessResult()
     {
-        Hotel.Hotel hotel = ValidHotel.Value!;
+        Accommodation.Domain.Hotel.Hotel hotel = ValidHotel.Value!;
         Facility[] updatedFacilities = [Facility.Restaurant, Facility.Gym];
         
-        Result<Hotel.Hotel> result = hotel.UpdateFacilities(updatedFacilities);
+        Result<Accommodation.Domain.Hotel.Hotel> result = hotel.UpdateFacilities(updatedFacilities);
         
         result.IsSuccess.Should().BeTrue();
         result.IsFailure.Should().BeFalse();
         result.Error.Should().BeNull();
-        result.Value.As<Hotel.Hotel>().Facilities.Should().BeEquivalentTo(updatedFacilities);
+        result.Value.As<Accommodation.Domain.Hotel.Hotel>().Facilities.Should().BeEquivalentTo(updatedFacilities);
         result.Value!.GetDomainEvents().First().Should().BeOfType<FacilitiesUpdatedEvent>(); 
     }
     
     [Fact]
     public void AddStar_WithValidStar_ShouldReturnSuccessResult()
     {
-        Hotel.Hotel hotel = ValidHotel.Value!;
+        Accommodation.Domain.Hotel.Hotel hotel = ValidHotel.Value!;
         Star[] updatedStars = [Star.Five, Star.Four];
         
-        Result<Hotel.Hotel> result = hotel.AddStar(Star.Four);
+        Result<Accommodation.Domain.Hotel.Hotel> result = hotel.AddStar(Star.Four);
         
         result.IsSuccess.Should().BeTrue();
         result.IsFailure.Should().BeFalse();
         result.Error.Should().BeNull();
-        result.Value.As<Hotel.Hotel>().Stars.Should().BeEquivalentTo(updatedStars);
+        result.Value.As<Accommodation.Domain.Hotel.Hotel>().Stars.Should().BeEquivalentTo(updatedStars);
         result.Value!.GetDomainEvents().First().Should().BeOfType<StarAddedEvent>(); 
     }
     
@@ -182,7 +185,7 @@ public class HotelDomainTests
             HttpStatusCode.UnprocessableEntity
         );
         
-        Result<Hotel.Hotel> result = ValidHotel.Value!.UpdateStars([]);
+        Result<Accommodation.Domain.Hotel.Hotel> result = ValidHotel.Value!.UpdateStars([]);
         
         result.IsSuccess.Should().BeFalse();
         result.IsFailure.Should().BeTrue();
@@ -192,15 +195,15 @@ public class HotelDomainTests
     [Fact]
     public void UpdateStars_WithValidStars_ShouldReturnSuccessResult()
     {
-        Hotel.Hotel hotel = ValidHotel.Value!;
+        Accommodation.Domain.Hotel.Hotel hotel = ValidHotel.Value!;
         Star[] updatedStars = [Star.Four, Star.Five];
         
-        Result<Hotel.Hotel> result = hotel.UpdateStars(updatedStars);
+        Result<Accommodation.Domain.Hotel.Hotel> result = hotel.UpdateStars(updatedStars);
         
         result.IsSuccess.Should().BeTrue();
         result.IsFailure.Should().BeFalse();
         result.Error.Should().BeNull();
-        result.Value.As<Hotel.Hotel>().Stars.Should().BeEquivalentTo(updatedStars);
+        result.Value.As<Accommodation.Domain.Hotel.Hotel>().Stars.Should().BeEquivalentTo(updatedStars);
         result.Value!.GetDomainEvents().First().Should().BeOfType<StarsUpdatedEvent>(); 
     }
     
@@ -209,7 +212,7 @@ public class HotelDomainTests
         {
             new object[]
             {
-                Hotel.Hotel.Create(new HotelId(Guid.Empty), "", 0, default!, [], []),
+                Accommodation.Domain.Hotel.Hotel.Create(new HotelId(Guid.Empty), "", 0, default!, [], []),
                 ErrorFactory.BuildError(
                     ErrorCode.Validation,
                     ErrorType.InvalidFormat,
@@ -219,7 +222,7 @@ public class HotelDomainTests
             },
             new object[]
             {
-                Hotel.Hotel.Create(ValidHotel.Value!.Id, "", 0, default!, [], []),
+                Accommodation.Domain.Hotel.Hotel.Create(ValidHotel.Value!.Id, "", 0, default!, [], []),
                 ErrorFactory.BuildError(
                     ErrorCode.Validation,
                     ErrorType.InvalidFormat,
@@ -229,7 +232,7 @@ public class HotelDomainTests
             },
             new object[]
             {
-                Hotel.Hotel.Create(ValidHotel.Value!.Id, ValidHotel.Value!.Name, 0, default!, [], []),
+                Accommodation.Domain.Hotel.Hotel.Create(ValidHotel.Value!.Id, ValidHotel.Value!.Name, 0, default!, [], []),
                 ErrorFactory.BuildError(
                     ErrorCode.Validation,
                     ErrorType.InvalidFormat,
@@ -239,11 +242,11 @@ public class HotelDomainTests
             }
         };
     
-    private static Result<Hotel.Hotel> ValidHotel 
+    private static Result<Accommodation.Domain.Hotel.Hotel> ValidHotel 
     {
         get
         {
-            Result<Hotel.Hotel> hotel = Hotel.Hotel.Create(
+            Result<Accommodation.Domain.Hotel.Hotel> hotel = Accommodation.Domain.Hotel.Hotel.Create(
                 new HotelId(Guid.NewGuid()),
                 "Hotel 1", 
                 200, 

@@ -1,0 +1,12 @@
+global using System.Text.Json;
+global using Accommodation.API.ActionResults;
+global using Microsoft.AspNetCore.Mvc;
+global using Accommodation.Application.Common;
+global using Accommodation.Application.Models;
+global using Accommodation.Application.Repositories;
+global using Accommodation.Domain.Hotel;
+global using Accommodation.Domain.Hotel.Commands;
+global using Core.Domain.Common;
+global using Accommodation.Infrastructure.Common;
+global using MediatR;
+global using PrimeBooking.Serialization;
