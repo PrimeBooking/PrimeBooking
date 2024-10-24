@@ -1,5 +1,3 @@
-using PrimeBooking.Domain.Hotel;
-
 namespace Accommodation.Domain.Hotel.Commands;
 
 public record CreateHotelCommand : IRequest

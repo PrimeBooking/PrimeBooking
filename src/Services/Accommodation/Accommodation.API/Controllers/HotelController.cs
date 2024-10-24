@@ -5,7 +5,7 @@ namespace Accommodation.API.Controllers;
 /// </summary>
 [ApiController]
 [Route("api/[controller]")]
-public class HotelController(IActionResultCreator actionResultCreator) : Controller
+public class HotelController(IActionResultCreator actionResultCreator, IMediator mediator) : Controller
 {
     
     /// <summary>

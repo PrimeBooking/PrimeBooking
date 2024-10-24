@@ -8,4 +8,5 @@ global using Accommodation.Domain.Hotel;
 global using Accommodation.Domain.Hotel.Commands;
 global using Core.Domain.Common;
 global using Accommodation.Infrastructure.Common;
+global using MediatR;
 global using PrimeBooking.Serialization;

@@ -1,3 +1,3 @@
 global using System.Net;
 global using System.Text.Json.Serialization;
-global using Mediator;
+global using MediatR;
